@@ -122,24 +122,33 @@ void loop ()
 
     RtcDateTime now = Rtc.GetDateTime();
 
-    shiber = map(analogRead(potShiberPin),300,1023,100,3700);
+    shiber = map(analogRead(potShiberPin),0,1023,300,3700); // считываем с аналогового пина показания потенциометра и конвертирует в диапазон секунд между запусками
 
-    knife = map(analogRead(potKnifePin), 300,1023, 100, 280);
+    knife = map(analogRead(potKnifePin), 0,1023, 100, 280);
 
-    konveer = map(analogRead(potKonveerPin), 300,1023, 100, 700);
+    konveer = map(analogRead(potKonveerPin), 0,1023, 100, 700);
+//
+//    Serial.print(analogRead(potKnifePin));
+//    Serial.print(" ");
+//    Serial.print(analogRead(potKonveerPin));
+//    Serial.print(" ");
+//    Serial.print(analogRead(potShiberPin));
+//    Serial.println();
+//    
+//    Serial.print(knife);
+//    Serial.print(" ");
+//    Serial.print(konveer);
+//    Serial.print(" ");
+//    Serial.print(shiber);
+//    Serial.println();
+//    Serial.println();
 
-
-//    printDateTime(now);
-    if (now.IsValid())
+    if (now.IsValid()) //если время считано правильно
     {
-//      Serial.println();
-      //      rtcDelta = now - rtcOld;
-      //      Serial.print(rtcDelta);
-      //      Serial.println();
 
       if ( ((now - shiberOld) >= shiber) & ((now - konveerOld) > 80) & ((now - knifeOld) > 40) ) //если прошло достаточно времени то запустить шибер
-      {
-        Serial.print(now - knifeOld);
+      {   // сейчас минус (время прошлого срабатывания) И если конвеер сработал недавно ждем 80 сек И если недавно сработали ножи ждем
+        Serial.print(now - shiberOld);
         Serial.print(" сек. сработал шибер ");
         printDateTime(now);
         Serial.print(" shiber= ");
@@ -147,7 +156,7 @@ void loop ()
         Serial.println();
         shiberOld = now;
 
-        digitalWrite(shiberPin, LOW);
+        digitalWrite(shiberPin, LOW); //
         delay(1000);
         digitalWrite(shiberPin, HIGH);
       }
@@ -169,7 +178,7 @@ void loop ()
 
       if ( ((now - konveerOld) >= konveer) & ((now - shiberOld) > 75) & ((now - knifeOld) > 50) )
       {
-        Serial.print(now - knifeOld);
+        Serial.print(now - konveerOld);
         Serial.print(" сек. сработал конвеер ");
         printDateTime(now);
         Serial.print(" Konveer= ");
