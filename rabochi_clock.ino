@@ -20,17 +20,20 @@ long konveerOld = 10;
 int konveerPin = 8; //пин включения конвеера
 int konveerPinOff = 9; // пин выключения конвеера
 long konveerDelay = 5;
+int potKonveerPin = A3;
 
 
 long knife = 180; // 180000 3 минуты между срабатываниямм
 long knifeOld = 0;
 int knifePin = 7; //Номер пина
+int potKnifePin = A4;
 
 long shiber = 3600; // 3600000 1 час между срабатываниями
 long shiberOld = 0;
 int shiberPin = 10;
 long shiberDelay = 10;
 long shiberStartCicke = 0;
+int potShiberPin = A5;
 
 void setup ()
 {
@@ -50,14 +53,17 @@ void setup ()
   pinMode (konveerPinOff, OUTPUT);
   RtcDateTime konveerOld = Rtc.GetDateTime(); //TODO не срабатывает на каждой загрузке 
   digitalWrite(konveerPin, HIGH); //включаем на старте пины чтобы выключить реле(реле срабатывают когда на пине нет питания
+  pinMode(potKonveerPin, INPUT);
 
   pinMode (knifePin, OUTPUT);
   RtcDateTime knifeOld = Rtc.GetDateTime();
   digitalWrite(knifePin, HIGH);
+  pinMode(potKnifePin, INPUT);
 
   pinMode (shiberPin, OUTPUT);
   RtcDateTime shiberOld = Rtc.GetDateTime();
   digitalWrite(shiberPin, HIGH);
+  pinMode(potShiberPin,INPUT);
 
   konveerOld = Rtc.GetDateTime();
   knifeOld = Rtc.GetDateTime();
@@ -115,6 +121,21 @@ void loop ()
 
     RtcDateTime now = Rtc.GetDateTime();
 
+    shiber = map(analogRead(potShiberPin),400,1023,100,3700);
+    Serial.print(" shiber= ");
+    Serial.print(shiber);
+    Serial.println();
+
+    knife = map(analogRead(potKnifePin), 400,1023, 100, 280);
+    Serial.print("knife= ");
+    Serial.print(knife);
+    Serial.println();
+
+    konveer = map(analogRead(potKonveerPin), 400,1023, 100, 700);
+    Serial.print("Konveer= ");
+    Serial.print(konveer);
+    Serial.println();
+    Serial.println();
 
 //    printDateTime(now);
     if (now.IsValid())
@@ -129,6 +150,8 @@ void loop ()
         Serial.print(now - knifeOld);
         Serial.print(" сек. сработал шибер ");
         printDateTime(now);
+        Serial.print(" shiber= ");
+        Serial.print(shiber);
         Serial.println();
         shiberOld = now;
 
