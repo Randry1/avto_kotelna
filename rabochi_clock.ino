@@ -53,6 +53,7 @@ void setup ()
   pinMode (konveerPinOff, OUTPUT);
   RtcDateTime konveerOld = Rtc.GetDateTime(); //TODO не срабатывает на каждой загрузке 
   digitalWrite(konveerPin, HIGH); //включаем на старте пины чтобы выключить реле(реле срабатывают когда на пине нет питания
+  digitalWrite(konveerPinOff, HIGH); //включаем на старте пины чтобы выключить реле(реле срабатывают когда на пине нет питания
   pinMode(potKonveerPin, INPUT);
 
   pinMode (knifePin, OUTPUT);
@@ -121,21 +122,12 @@ void loop ()
 
     RtcDateTime now = Rtc.GetDateTime();
 
-    shiber = map(analogRead(potShiberPin),400,1023,100,3700);
-    Serial.print(" shiber= ");
-    Serial.print(shiber);
-    Serial.println();
+    shiber = map(analogRead(potShiberPin),300,1023,100,3700);
 
-    knife = map(analogRead(potKnifePin), 400,1023, 100, 280);
-    Serial.print("knife= ");
-    Serial.print(knife);
-    Serial.println();
+    knife = map(analogRead(potKnifePin), 300,1023, 100, 280);
 
-    konveer = map(analogRead(potKonveerPin), 400,1023, 100, 700);
-    Serial.print("Konveer= ");
-    Serial.print(konveer);
-    Serial.println();
-    Serial.println();
+    konveer = map(analogRead(potKonveerPin), 300,1023, 100, 700);
+
 
 //    printDateTime(now);
     if (now.IsValid())
@@ -165,6 +157,8 @@ void loop ()
         Serial.print(now - knifeOld);
         Serial.print(" сек. сработали ножи ");
         printDateTime(now);
+        Serial.print(" knife= ");
+        Serial.print(knife);
         Serial.println();
         knifeOld = now;
 
@@ -178,6 +172,8 @@ void loop ()
         Serial.print(now - knifeOld);
         Serial.print(" сек. сработал конвеер ");
         printDateTime(now);
+        Serial.print(" Konveer= ");
+        Serial.print(konveer);
         Serial.println(); 
         konveerOld = now;
 
