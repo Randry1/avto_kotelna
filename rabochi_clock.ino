@@ -15,18 +15,18 @@ long rtcOld = 0;
 long rtcDelta = 0; //Время прошедшее между циклами
 bool loading = false;
 
-long konveer = 600; //600000
+long konveer = 600; //600000 10 минут между срабатываниями
 long konveerOld = 10;
 int konveerPin = 8; //пин включения конвеера
 int konveerPinOff = 9; // пин выключения конвеера
 long konveerDelay = 5;
 
 
-long knife = 180; // 180000
+long knife = 180; // 180000 3 минуты между срабатываниямм
 long knifeOld = 0;
 int knifePin = 7; //Номер пина
 
-long shiber = 3600; // 3600000
+long shiber = 3600; // 3600000 1 час между срабатываниями
 long shiberOld = 0;
 int shiberPin = 10;
 long shiberDelay = 10;
@@ -48,8 +48,8 @@ void setup ()
 
   pinMode (konveerPin, OUTPUT);
   pinMode (konveerPinOff, OUTPUT);
-  RtcDateTime konveerOld = Rtc.GetDateTime();
-  digitalWrite(konveerPin, HIGH);
+  RtcDateTime konveerOld = Rtc.GetDateTime(); //TODO не срабатывает на каждой загрузке 
+  digitalWrite(konveerPin, HIGH); //включаем на старте пины чтобы выключить реле(реле срабатывают когда на пине нет питания
 
   pinMode (knifePin, OUTPUT);
   RtcDateTime knifeOld = Rtc.GetDateTime();
